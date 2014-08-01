@@ -11,7 +11,7 @@ library(grid)
 
 #use data.nosing rar generated in "data_wrangling.R"
 
-metadata<-read.csv("COBS_ITS_metadata.csv")
+metadata<-read.csv(file.choose())
 str(metadata)
 metadata$ExtC<-as.numeric(levels(metadata$ExtC))[metadata$ExtC]
 metadata$MBC<-as.numeric(levels(metadata$MBC))[metadata$MBC]
