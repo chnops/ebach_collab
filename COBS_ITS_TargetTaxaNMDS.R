@@ -67,14 +67,6 @@ X1
 
 mds.pa<-metaMDS(decostand(merged_taxa[,-c(1:11)],"pa" ),k=6,autotransform=FALSE, na.rm=TRUE)
 
-#Subset for LM, micro (SoilFrac differences)
-merged_LMmicro<-subset(merged_taxa,merged_taxa$SoilFrac=="LM"|SoilFrac=="Micro")
-dim(merged_LMmicro)
-head(merged_LMmicro[1:12])
-mds.SoilFrac<-metaMDS(decostand(merged_LMmicro[,-c(1:11)],"pa"),k=6,autotransform=FALSE, na.rm=TRUE)
-str(mds.SoilFrac)
-mds.SoilFrac$points
-
 #Figure summarizing target taxa in presence/absence NMDS
 Limonomyces<-subset(data_taxa2, data_taxa2$Genus=="g__Limonomyces")
 head(Limonomyces)
@@ -163,26 +155,6 @@ ggplot.NMDS(mds.pa, (taxa.interest$SoilFrac), rainbow(5))+geom_point(data=IntVec
 geom_text(data=IntVectors3,aes(x=arrows.NMDS1,y=arrows.NMDS2,label=names),position=position_jitter(height=0.15),size=4)+geom_segment(data=vectors2, aes(x=0,xend=arrows.NMDS1,y=0,yend=arrows.NMDS2),arrow=arrow(length = unit(0.5, "cm")),colour="grey",inherit_aes=FALSE)+
 geom_text(data=vectors2,aes(x=arrows.NMDS1,y=arrows.NMDS2,label=names),position=position_jitter(width=0.15),size=4)
 
-#Showing only statistically different SoilFrac groups:  Look into just taking off centroids
-taxa.LMmicro<-subset(taxa.interest, taxa.interest$SoilFrac=="LM"|SoilFrac=="Micro")
-dim(taxa.LMmicro)
-SFVectors1<-envfit(mds.SoilFrac, taxa.LMmicro[,6:15], na.rm=TRUE)
-SFVectors1
-vectors<-data.frame(SFVectors1$vectors[1:4])
-vectors
-names<-c("Limonomyces","Atheliales","UnkBasidio","Thanatephorus","Psathyrellaceae","Strophariaceae","Peziza","Bionectriaceae","Glomerales","Operculomyces")
-SFVectors3<-data.frame(names, vectors)
-#IntVectors3<-(subset(IntVectors2, pvals<0.05)
-
-metadata.SF<-subset(data.metadata, data.metadata$SoilFrac.x=="LM"|SoilFrac.x=="micro")
-dim(metadata.SF)
-envectorsSF<-envfit(mds.SoilFrac, metadata.SF[,7:15], na.rm=TRUE)
-envectorsSF
-vectorsSF<-data.frame(envectorsSF$vectors[1:4])
-names<-c("pH","water_content","AP","BG","BX","CB","NAG","TC","TN","CN")
-vectorsSF2<-data.frame(names,vectors)
-vectorsSF2
-
 #altering NMDS plotting function, from R. Williams to take off centroids, hopefully retain only LM, micro
 ggplot.NMDS2<-function(XX,ZZ,COLORS){
 	library(ggplot2)
@@ -201,19 +173,13 @@ veganCovEllipse<-function (cov, center = c(0, 0), scale = 1, npoints = 100)
     t(center + scale * t(Circle %*% chol(cov)))
   }
 
-  df_ell <- data.frame()
+  df_ella <- data.frame()
   for(g in levels(NMDS$Treatment)){
-    df_ell <- rbind(df_ell, cbind(as.data.frame(with(NMDS[NMDS$Treatment=="LM"|Treatment=="Micro",],
+    df_ella <- rbind(df_ella, cbind(as.data.frame(with(NMDS[NMDS$Treatment=="LM",],
                     veganCovEllipse(cov.wt(cbind(MDS1,MDS2),wt=rep(1/length(MDS1),length(MDS1)))$cov,center=c(mean(MDS1),mean(MDS2)))))
-                    ,group=g))
+                    ,group="LM"))
   }
 
-X1<-ggplot(data = NMDS, aes(MDS1, MDS2)) + geom_point(aes(color = Treatment),size=3,alpha=0.75) +
-    geom_path(data=df_ell, aes(x=MDS1, y=MDS2,colour=group), size=2, linetype=5)+theme_bw()+theme(aspect.ratio=1)+scale_color_manual(values=COLORS)+theme(axis.text.x=element_text(size=20),axis.text.y=element_text(size=20),axis.title.x=element_text(size=20),axis.title.y=element_text(size=20))+theme(legend.title=element_text(size=15),legend.text=element_text(size=15))
-X1    
-}
-
-#Centroid function
 veganCovEllipse<-function (cov, center = c(0, 0), scale = 1, npoints = 100) 
   {
     theta <- (0:npoints) * 2 * pi/npoints
@@ -221,20 +187,23 @@ veganCovEllipse<-function (cov, center = c(0, 0), scale = 1, npoints = 100)
     t(center + scale * t(Circle %*% chol(cov)))
   }
 
-  df_ell <- data.frame()
-  for(g in levels(NMDS$SoilFrac)){
-    df_ell <- rbind(df_ell, cbind(as.data.frame(with(NMDS[NMDS$SoilFrac=="LM"|SoilFrac=="Micro",],
+  df_ellb <- data.frame()
+  for(g in levels(NMDS$Treatment)){
+    df_ellb <- rbind(df_ellb, cbind(as.data.frame(with(NMDS[NMDS$Treatment=="Micro",],
                     veganCovEllipse(cov.wt(cbind(MDS1,MDS2),wt=rep(1/length(MDS1),length(MDS1)))$cov,center=c(mean(MDS1),mean(MDS2)))))
-                    ,group=g))
+                    ,group="Micro"))
   }
 
-ggplot.NMDS2(mds.pa, (taxa.interest$SoilFrac), rainbow(5))
+X1<-ggplot(data = NMDS, aes(MDS1, MDS2)) + geom_point(aes(color = Treatment),size=3,alpha=0.75) +
+    geom_path(data=df_ella, aes(x=MDS1, y=MDS2,colour=group), size=2, linetype=5)+geom_path(data=df_ellb, aes(x=MDS1, y=MDS2,colour=group), size=2, linetype=5)+theme_bw()+theme(aspect.ratio=1)+scale_color_manual(values=COLORS)+theme(axis.text.x=element_text(size=20),axis.text.y=element_text(size=20),axis.title.x=element_text(size=20),axis.title.y=element_text(size=20))+theme(legend.title=element_text(size=15),legend.text=element_text(size=15))
+X1    
+}
 
-+geom_path(data=df_ell, aes(x=MDS1, y=MDS2,colour=group), size=2, linetype=5)
-+geom_point(data=SFVectors3, aes(x=arrows.NMDS1,y=arrows.NMDS2),colour="darkgrey",inherit_aes=FALSE)+
-geom_text(data=SFVectors3,aes(x=arrows.NMDS1,y=arrows.NMDS2,label=names),position=position_jitter(height=0.15),size=4)+geom_segment(data=vectorsSF2, aes(x=0,xend=arrows.NMDS1,y=0,yend=arrows.NMDS2),arrow=arrow(length = unit(0.5, "cm")),colour="grey",inherit_aes=FALSE)+
-geom_text(data=vectorsSF2,aes(x=arrows.NMDS1,y=arrows.NMDS2,label=names),position=position_jitter(width=0.15),size=4)
+#Figure Draft, includes LM, Micro (stat. diff community (dispersion))+stat. sig environmental vectors + stat. sig. taxa centroids!
 
+ggplot.NMDS2(mds.pa, (taxa.interest$SoilFrac), rainbow(5))+geom_point(data=IntVectors3, aes(x=arrows.NMDS1,y=arrows.NMDS2),colour="darkgrey",inherit_aes=FALSE)+
+geom_text(data=IntVectors3,aes(x=arrows.NMDS1,y=arrows.NMDS2,label=names),position=position_jitter(height=0.15),size=4)+geom_segment(data=vectors2, aes(x=0,xend=arrows.NMDS1,y=0,yend=arrows.NMDS2),arrow=arrow(length = unit(0.5, "cm")),colour="grey",inherit_aes=FALSE)+
+geom_text(data=vectors2,aes(x=arrows.NMDS1,y=arrows.NMDS2,label=names),position=position_jitter(width=0.15),size=4)
 
 
 #Correlations between BX, Thanatephorus and Psathyrellaceae
