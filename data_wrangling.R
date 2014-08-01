@@ -10,11 +10,11 @@ library(ggplot2)
 
 
 # setwd("/Users/ryanjwtx/Desktop/bach_collab/")
-dataset<-read.csv("EBach_COBS_ITS_data.csv")
+#dataset<-read.csv("EBach_COBS_ITS_data.csv")
 
 
-# Read in the data
-# dataset<-read.csv(file.choose())
+# Read in the data, Mike Hofmockel advice to use file choose so can keep data in directory seperate from code
+dataset<-read.csv(file.choose())
 
 # First we remove the singletons using the dropspc() function form the labdsv package.  In the line below I bind metadata (columns 1 through 5)
 # and the singleton-removed dataset.  Note that for the dropspc function I only use columns 6 through 9538 as these are all the OTUs (no metadata),
