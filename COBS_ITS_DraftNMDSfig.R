@@ -56,13 +56,15 @@ envectors1<-envfit(mds.pa, data.metadata2[,7:15], na.rm=TRUE)
 head(envectors1)
 envectors1
 vectors2<-data.frame(envectors1$vectors[1:4])
-names<-c("water_content","AP","BG","BX","CB","NAG","TC","TN","CN")
+names<-c("water content","AP","BG","BX","CB","NAG","TC,TN","","C:N")
 vectors3<-subset(data.frame(names,vectors2), pvals<0.05)
 vectors3
 
-PA.Crop<-ggplot.NMDS(mds.pa, (taxa.interest$Crop), rainbow(3))+geom_point(data=IntVectors3, aes(x=arrows.NMDS1,y=arrows.NMDS2),colour="grey",inherit_aes=FALSE)+
-geom_text(data=IntVectors3,aes(x=arrows.NMDS1,y=arrows.NMDS2,label=names),position=position_jitter(height=0.15),size=4)+geom_segment(data=vectors3, aes(x=0,xend=arrows.NMDS1,y=0,yend=arrows.NMDS2),arrow=arrow(length = unit(0.5, "cm")),colour="grey",inherit_aes=FALSE)+
-geom_text(data=vectors3,aes(x=arrows.NMDS1,y=arrows.NMDS2,label=names),position=position_jitter(width=0.15),size=4)
+PA.Crop<-ggplot.NMDS(mds.pa, (taxa.interest$Crop), rainbow(3))+geom_point(data=IntVectors3, aes(x=arrows.NMDS1,y=arrows.NMDS2),colour="darkgrey",size=3,inherit_aes=FALSE)+
+geom_text(data=IntVectors3,aes(x=arrows.NMDS1,y=arrows.NMDS2,label=names),vjust=1,hjust=0.5,size=4,fontface="bold")+geom_segment(data=vectors3, aes(x=0,xend=arrows.NMDS1,y=0,yend=arrows.NMDS2),arrow=arrow(length = unit(0.35, "cm")),colour="darkgrey",size=1,inherit_aes=FALSE)+
+geom_text(data=vectors3,aes(x=arrows.NMDS1,y=arrows.NMDS2,label=names),hjust=0.7,vjust=1.25,size=4,fontface="bold")+annotate("text", label="B)", x=-0.65, y=0.95, cex=8, font=2)+coord_cartesian(xlim=c(-0.8,1.2))+
+theme(axis.line=element_line(size=2), aspect.ratio=1, panel.border=element_blank(),axis.ticks=element_line(size=2, colour="black"), legend.position=c(0.9, 0.95), legend.background=element_blank(), legend.text=element_text(size=16, face="bold"),legend.key=element_blank(),legend.title=element_blank(),panel.background=element_blank(), axis.text=element_text(size=16, face="bold", colour="black"), axis.title=element_text(size=18, face="bold", colour="black"))
+
 PA.Crop
 
 #altering NMDS plotting function, from R. Williams to include only LM, micro fraction centroids, which are only 2 statistically diff.
@@ -111,9 +113,11 @@ X1
 
 #Figure Draft, includes LM, Micro (stat. diff community (dispersion))+stat. sig environmental vectors + stat. sig. taxa centroids!
 
-PA.SoilFrac<-ggplot.NMDS2(mds.pa, (taxa.interest$SoilFrac), rainbow(5))+geom_point(data=IntVectors3, aes(x=arrows.NMDS1,y=arrows.NMDS2),colour="darkgrey",inherit_aes=FALSE)+
-geom_text(data=IntVectors3,aes(x=arrows.NMDS1,y=arrows.NMDS2,label=names),position=position_jitter(height=0.15),size=4)+geom_segment(data=vectors3, aes(x=0,xend=arrows.NMDS1,y=0,yend=arrows.NMDS2),arrow=arrow(length = unit(0.5, "cm")),colour="grey",inherit_aes=FALSE)+
-geom_text(data=vectors3,aes(x=arrows.NMDS1,y=arrows.NMDS2,label=names),position=position_jitter(width=0.15),size=4)
+PA.SoilFrac<-ggplot.NMDS2(mds.pa, (taxa.interest$SoilFrac), rainbow(5))+geom_point(data=IntVectors3, aes(x=arrows.NMDS1,y=arrows.NMDS2),colour="darkgrey",size=3,inherit_aes=FALSE)+
+geom_text(data=IntVectors3,aes(x=arrows.NMDS1,y=arrows.NMDS2,label=names),vjust=1,hjust=0.5,size=4,fontface="bold")+geom_segment(data=vectors3, aes(x=0,xend=arrows.NMDS1,y=0,yend=arrows.NMDS2),arrow=arrow(length = unit(0.35, "cm")),colour="darkgrey",size=1,inherit_aes=FALSE)+
+geom_text(data=vectors3,aes(x=arrows.NMDS1,y=arrows.NMDS2,label=names),hjust=0.7,vjust=1.25,size=4,fontface="bold")+annotate("text", label="A)", x=-0.65, y=0.95, cex=8, font=2)+coord_cartesian(xlim=c(-0.8,1.2))+
+theme(axis.line=element_line(size=2), aspect.ratio=1, panel.border=element_blank(),axis.ticks=element_line(size=2, colour="black"), legend.position=c(0.9, 0.9), legend.background=element_blank(), legend.text=element_text(size=16, face="bold"),legend.key=element_blank(),legend.title=element_blank(),panel.background=element_blank(), axis.text=element_text(size=16, face="bold", colour="black"), axis.title=element_text(size=18, face="bold", colour="black"))
+
 PA.SoilFrac
 
 #Abundance, Crop only is statistically affecting communities
@@ -124,7 +128,7 @@ envectors2<-envfit(mds.ab, data.metadata2[,7:15], na.rm=TRUE)
 envectors2
 vectors.ab<-data.frame(envectors2$vectors[1:4])
 vectors.ab
-names<-c("water_content","AP","BG","BX","CB","NAG","TC","TN","CN")
+names<-c("moisture","AP","BG","BX","CB","NAG","","TC,TN,C:N","")
 vectors.ab2<-subset(data.frame(names,vectors.ab), pvals<0.05)
 vectors.ab2
 
@@ -133,11 +137,15 @@ IntVectors1ab
 vectors_ab<-data.frame(IntVectors1ab$vectors[1:4])
 vectors_ab
 names<-c("Limonomyces","Atheliales","UnkBasidio","Thanatephorus","Psathyrellaceae","Strophariaceae","Peziza","Bionectriaceae","Glomerales","Operculomyces")
-IntVectors2ab<-data.frame(names, vectors_ab)
+IntVectors2ab<-subset(data.frame(names, vectors_ab), pvals<0.05)
+IntVectors2ab
 
-Abund.Crop<-ggplot.NMDS(mds.ab, (data.metadata2$Crop.x), rainbow(3))+geom_segment(data=vectors.ab2, aes(x=0,xend=arrows.NMDS1,y=0,yend=arrows.NMDS2),arrow=arrow(length = unit(0.5, "cm")),colour="grey",inherit_aes=FALSE)+
-geom_text(data=vectors.ab2,aes(x=arrows.NMDS1,y=arrows.NMDS2,label=names),position=position_jitter(width=0.1),size=4)+geom_point(data=IntVectors2ab, aes(x=arrows.NMDS1,y=arrows.NMDS2),colour="grey",inherit_aes=FALSE)+
-geom_text(data=IntVectors2ab,aes(x=arrows.NMDS1,y=arrows.NMDS2,label=names),position=position_jitter(height=0.2),size=4)
+Abund.Crop<-ggplot.NMDS(mds.ab, (data.metadata2$Crop.x), rainbow(3))+geom_segment(data=vectors.ab2, aes(x=0,xend=arrows.NMDS1,y=0,yend=arrows.NMDS2),arrow=arrow(length = unit(0.35, "cm")),colour="darkgrey",size=1,inherit_aes=FALSE)+
+geom_point(data=IntVectors2ab, aes(x=arrows.NMDS1,y=arrows.NMDS2),colour="darkgrey",size=3,inherit_aes=FALSE)+geom_text(data=IntVectors2ab,aes(x=arrows.NMDS1,y=arrows.NMDS2,label=names),vjust=1,hjust=0.5,size=4,fontface="bold")+
+geom_text(data=vectors.ab2,aes(x=arrows.NMDS1,y=arrows.NMDS2,label=names),hjust=0.1,vjust=-0.2,size=4,fontface="bold")+
+annotate("text", label="C)", x=-1.2, y=0.95, cex=8, font=2)+coord_cartesian(xlim=c(-1.4,1.3))+
+theme(axis.line=element_line(size=2), aspect.ratio=1, panel.border=element_blank(),axis.ticks=element_line(size=2, colour="black"), legend.position="none",panel.background=element_blank(), axis.text=element_text(size=16, face="bold", colour="black"), axis.title=element_text(size=18, face="bold", colour="black"))
+
 Abund.Crop
 
 #Draft Figure, 3 panels, horizontal
