@@ -16,8 +16,8 @@ head(data.nosing.rar[,1:10])
 data_melt<-melt(data.nosing.rar, id=c("SampleName","Date","Block","Crop","SoilFrac"))
 head(data_melt)
 
-#taxonomy<-read.csv(file.choose())
-taxonomy<-read.csv("Ebach_ITS_COBS_taxonomy.csv")
+taxonomy<-read.csv(file.choose())
+#taxonomy<-read.csv("Ebach_ITS_COBS_taxonomy.csv")
 head(taxonomy)
 head(data_melt)
 data_taxa<-merge(data_melt,taxonomy,by.x="variable",by.y="X.OTU.ID")
@@ -25,6 +25,7 @@ head(data_taxa)
 data_taxa2<-data_taxa[ which(data_taxa$value>0),]
 head(data_taxa2)
 #??For Presence/Absence should be taking out all the 0's??  Doesn't seem to change story, but keep thinking about this.
+#Tried with and without 0 removal step, same story, cleaner figure with 0s out
 data_phyla<-data.frame(cast(data_taxa2, SampleName~Phylum, value="value", fun.aggregate=sum, add.missing=TRUE))
 head(data_phyla)
 head(data.nosing.rar[,1:10])
