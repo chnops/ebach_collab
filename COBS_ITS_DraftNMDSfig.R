@@ -50,6 +50,7 @@ vectors
 names<-c("Limonomyces","Atheliales","UnkBasidio","Thanatephorus","Psathyrellaceae","Strophariaceae","Peziza","Bionectriaceae","Glomerales","Operculomyces")
 IntVectors2<-data.frame(names, vectors)
 IntVectors3<-(subset(IntVectors2, pvals<0.05))
+IntVectors3
 
 #Environmental vectors
 envectors1<-envfit(mds.pa, data.metadata2[,7:15], na.rm=TRUE)
@@ -62,8 +63,8 @@ vectors3
 
 PA.Crop<-ggplot.NMDS(mds.pa, (taxa.interest$Crop), rainbow(3))+geom_point(data=IntVectors3, aes(x=arrows.NMDS1,y=arrows.NMDS2),colour="darkgrey",size=3,inherit_aes=FALSE)+
 geom_text(data=IntVectors3,aes(x=arrows.NMDS1,y=arrows.NMDS2,label=names),vjust=1,hjust=0.5,size=4,fontface="bold")+geom_segment(data=vectors3, aes(x=0,xend=arrows.NMDS1,y=0,yend=arrows.NMDS2),arrow=arrow(length = unit(0.35, "cm")),colour="darkgrey",size=1,inherit_aes=FALSE)+
-geom_text(data=vectors3,aes(x=arrows.NMDS1,y=arrows.NMDS2,label=names),hjust=0.7,vjust=1.25,size=4,fontface="bold")+annotate("text", label="B)", x=-0.65, y=0.95, cex=8, font=2)+coord_cartesian(xlim=c(-0.8,1.2))+
-theme(axis.line=element_line(size=2), aspect.ratio=1, panel.border=element_blank(),axis.ticks=element_line(size=2, colour="black"), legend.position=c(0.9, 0.95), legend.background=element_blank(), legend.text=element_text(size=16, face="bold"),legend.key=element_blank(),legend.title=element_blank(),panel.background=element_blank(), axis.text=element_text(size=16, face="bold", colour="black"), axis.title=element_text(size=18, face="bold", colour="black"))
+geom_text(data=vectors3,aes(x=arrows.NMDS1,y=arrows.NMDS2,label=names),hjust=0.7,vjust=1.25,size=4,fontface="bold")+annotate("text", label="B)", x=-0.65, y=0.95, cex=8, font=2)+coord_cartesian(xlim=c(-0.8,1.25))+
+theme(axis.line=element_line(size=2), aspect.ratio=1, panel.border=element_blank(),axis.ticks=element_line(size=2, colour="black"), legend.position=c(0.9, 0.95), legend.background=element_blank(), legend.text=element_text(size=12, face="bold"),legend.key=element_blank(),legend.title=element_blank(),panel.background=element_blank(), axis.text=element_text(size=16, face="bold", colour="black"), axis.title=element_text(size=18, face="bold", colour="black"))
 
 PA.Crop
 
@@ -115,8 +116,8 @@ X1
 
 PA.SoilFrac<-ggplot.NMDS2(mds.pa, (taxa.interest$SoilFrac), rainbow(5))+geom_point(data=IntVectors3, aes(x=arrows.NMDS1,y=arrows.NMDS2),colour="darkgrey",size=3,inherit_aes=FALSE)+
 geom_text(data=IntVectors3,aes(x=arrows.NMDS1,y=arrows.NMDS2,label=names),vjust=1,hjust=0.5,size=4,fontface="bold")+geom_segment(data=vectors3, aes(x=0,xend=arrows.NMDS1,y=0,yend=arrows.NMDS2),arrow=arrow(length = unit(0.35, "cm")),colour="darkgrey",size=1,inherit_aes=FALSE)+
-geom_text(data=vectors3,aes(x=arrows.NMDS1,y=arrows.NMDS2,label=names),hjust=0.7,vjust=1.25,size=4,fontface="bold")+annotate("text", label="A)", x=-0.65, y=0.95, cex=8, font=2)+coord_cartesian(xlim=c(-0.8,1.2))+
-theme(axis.line=element_line(size=2), aspect.ratio=1, panel.border=element_blank(),axis.ticks=element_line(size=2, colour="black"), legend.position=c(0.9, 0.9), legend.background=element_blank(), legend.text=element_text(size=16, face="bold"),legend.key=element_blank(),legend.title=element_blank(),panel.background=element_blank(), axis.text=element_text(size=16, face="bold", colour="black"), axis.title=element_text(size=18, face="bold", colour="black"))
+geom_text(data=vectors3,aes(x=arrows.NMDS1,y=arrows.NMDS2,label=names),hjust=0.7,vjust=1.25,size=4,fontface="bold")+annotate("text", label="A)", x=-0.65, y=0.95, cex=8, font=2)+coord_cartesian(xlim=c(-0.8,1.25))+
+theme(axis.line=element_line(size=2), aspect.ratio=1, panel.border=element_blank(),axis.ticks=element_line(size=2, colour="black"), legend.position=c(0.9, 0.9), legend.background=element_blank(), legend.text=element_text(size=12, face="bold"),legend.key=element_blank(),legend.title=element_blank(),panel.background=element_blank(), axis.text=element_text(size=16, face="bold", colour="black"), axis.title=element_text(size=18, face="bold", colour="black"))
 
 PA.SoilFrac
 
