@@ -70,9 +70,8 @@ high95=boot.high(value),
 low95=boot.low(value)
 )
 head(Div.sum)
+print(levels(Div.sum$SoilFrac))
+Div.sum$SoilFrac=factor(Div.sum$SoilFrac, levels(Div.sum$SoilFrac)[c(2,4,3,1,5,6)])
+print(levels(Div.sum$SoilFrac))
 
 ggplot(Div.sum)+geom_pointrange(aes(x=SoilFrac,y=mean,ymin=low95,ymax=high95))+facet_wrap(~variable, scales="free",ncol=3)+theme_bw()+theme(aspect.ratio=1)
-#reorganize fractions so range from small to large, not alphabetical
-#This will take some tricking, as the ITS_WSprop.csv has fractions organized somewhat sporadic for WSprop calc
-
-Div.sum
