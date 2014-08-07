@@ -68,7 +68,7 @@ X1
 
 mds.pa<-metaMDS(decostand(merged_taxa[,-c(1:11)],"pa" ),k=6,autotransform=FALSE, na.rm=TRUE)
 
-#Figure summarizing target taxa in presence/absence NMDS
+#Figure summarizing target taxa in presence/absence NMDS, removing outliers
 Limonomyces<-subset(data_taxa2, data_taxa2$Genus=="g__Limonomyces")
 head(Limonomyces)
 Limonomyces.value<-data.frame(cast(Limonomyces, SampleName~Genus, value="value", fun.aggregate=sum, add.mising=TRUE))
@@ -81,11 +81,12 @@ UnkBasidio<-subset(Basidio.data, Basidio.data$Order=="") #Note see Basidio code 
 UnkBasidio.value<-data.frame(cast(UnkBasidio, SampleName~Order, value="value", fun.aggregate=sum, add.mising=TRUE))
 head(UnkBasidio.value)
 Thanatephorus<-subset(data_taxa2, data_taxa2$Genus=="g__Thanatephorus")
-Thanatephorus.value<-data.frame(cast(Thanatephorus, SampleName~Genus, value="value", fun.aggregate=sum, add.mising=TRUE))
+Thanatephorus.value<-subset(data.frame(cast(Thanatephorus, SampleName~Genus, value="value", fun.aggregate=sum, add.mising=TRUE)), g__Thanatephorus<125)
 head(Thanatephorus.value)
 Psathyrellaceae<-subset(data_taxa2, data_taxa2$Family=="f__Psathyrellaceae")
 Psathyrellaceae.value<-data.frame(cast(Psathyrellaceae, SampleName~Family, value="value", fun.aggregate=sum, add.mising=TRUE))
 head(Psathyrellaceae.value)
+Psathyrellaceae.value2<-Psathyrellaceae.value[-13,]
 Strophariaceae<-subset(data_taxa2, data_taxa2$Family=="f__Strophariaceae")
 Strophariaceae.value<-data.frame(cast(Strophariaceae, SampleName~Family, value="value", fun.aggregate=sum, add.mising=TRUE))
 head(Strophariaceae.value)
@@ -96,6 +97,7 @@ head(Peziza.value)
 Bionectriaceae<-subset(data_taxa2, data_taxa2$Family=="f__Bionectriaceae")
 Bionectriaceae.value<-data.frame(cast(Bionectriaceae, SampleName~Family, value="value", fun.aggregate=sum, add.mising=TRUE))
 head(Bionectriaceae.value)
+Bionectriaceae.value2<-Bionectriaceae.value[-20,]
 Glomerales<-subset(data_taxa2, data_taxa2$Order=="o__Glomerales")
 head(Glomerales)
 Glomerales.value<-data.frame(cast(Glomerales, SampleName~Order, value="value", fun.aggregate=sum, add.mising=TRUE))
@@ -108,10 +110,10 @@ taxa.interest1<-merge(SampleInfo, Limonomyces.value, by="SampleName", all=TRUE)
 taxa.interest2<-merge(taxa.interest1, Atheliales.value, by="SampleName", all=TRUE)
 taxa.interest3<-merge(taxa.interest2, UnkBasidio.value, by="SampleName", all=TRUE)
 taxa.interest4<-merge(taxa.interest3, Thanatephorus.value, by="SampleName", all=TRUE)
-taxa.interest5<-merge(taxa.interest4, Psathyrellaceae.value, by="SampleName", all=TRUE)
+taxa.interest5<-merge(taxa.interest4, Psathyrellaceae.value2, by="SampleName", all=TRUE)
 taxa.interest6<-merge(taxa.interest5, Strophariaceae.value, by="SampleName", all=TRUE)
 taxa.interest7<-merge(taxa.interest6, Peziza.value, by="SampleName", all=TRUE)
-taxa.interest8<-merge(taxa.interest7, Bionectriaceae.value, by="SampleName", all=TRUE)
+taxa.interest8<-merge(taxa.interest7, Bionectriaceae.value2, by="SampleName", all=TRUE)
 taxa.interest9<-merge(taxa.interest8, Glomerales.value, by="SampleName", all=TRUE)
 taxa.interest<-merge(taxa.interest9, Operculomyces.value, by="SampleName", all=TRUE)
 taxa.interest[is.na(taxa.interest)]<-0
