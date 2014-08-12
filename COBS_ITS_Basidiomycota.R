@@ -136,10 +136,15 @@ anova(Basidio.model.main)
 anova(Basidio.model.full)
 #SoilFrac P=0.009, Crop P=0.07
 difflsmeans(Basidio.model.main, ddf="Satterthwaite",type=3,method.grad="simple")
-#P<PF=CC, LM<WS, micro<WS, MM<WS
+#P<PF, CC intermediary, LM<WS, micro<WS, MM<WS
 #lower presence in Prairie ->responding to fertilizer?
 #Enriched in whole soil compaired to aggregate fractions, except SM
-
+Psath.crop<-ddply(Basidio.psath, .(Crop), summarise,.progress="text",
+mean=mean(value),
+high95=boot.high(value),
+low95=boot.low(value)
+)
+Psath.crop
 #Family Inocybaceae
 Basidio.inocy<-subset(Basidio.data, Basidio.data$Family=="f__Inocybaceae")
 head(Basidio.inocy)
@@ -167,6 +172,7 @@ head(Basidio.strophFig)
 ggplot(Basidio.strophFig)+geom_pointrange(aes(x=Species,y=mean,ymax=high95,ymin=low95, color=Crop),position=position_dodge(width=1))+coord_flip()+scale_y_log10()
 #Only 2 species identified, unidentified species most abundant, more abundant in P, PF than CC, very high abundance in P
 #Might be worth mentioning due to high abundance of unidentified species
+difflsmeans(Basidio.model.main, ddf="Satterthwaite",type=3,method.grad="simple")
 
 #Family Marasmiaceae
 Basidio.mara<-subset(Basidio.data, Basidio.data$Family=="f__Marasmiaceae")
@@ -272,6 +278,12 @@ anova(Basidio.model.full)
 #Insuficient presence in samples to generate interaction terms (e.g. lots of 0's)
 #Main effect of Date (P<0.0001), Crop (P<0.0001), and SoilFrac(P=0.02)
 difflsmeans(Basidio.model.main, ddf="Satterthwaite",type=3,method.grad="simple")
+Than.crop<-ddply(Basidio.than, .(Crop), summarise,.progress="text",
+mean=mean(value),
+high95=boot.high(value),
+low95=boot.low(value)
+)
+Than.crop
 
 #Order Atheliales
 Basidio.athe<-subset(Basidio.data, Basidio.data$Order=="o__Atheliales")
