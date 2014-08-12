@@ -335,7 +335,7 @@ Asco.unkCS<-ddply(Asco.unk, .(Crop, SoilFrac, Family), summarise,.progress="text
 low95=boot.low(value)
 )
 head(Asco.unkCS)
-ggplot(Asco.unkCS)+geom_pointrange(aes(x=Family,y=mean,ymax=high95,ymin=low95, group=Crop, color=SoilFrac),position=position_dodge(width=1))+coord_flip()+scale_y_log10()
+ggplot(Asco.unkCS)+geom_pointrange(aes(x=Crop,y=mean,ymax=high95,ymin=low95, group=Crop, color=SoilFrac),position=position_dodge(width=1))+coord_flip()+scale_y_log10()
 #Each cropping system has unique rank of aggregate fractions, lots of overlap
 #Again, no power to pull this apart further, but interesting to note amount of unidentified Ascomycota
 
