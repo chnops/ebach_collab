@@ -36,7 +36,8 @@ anova(Asco.null,Asco.model.full,Asco.model.main)
 anova(Asco.model.main)
 anova(Asco.model.full)
 #Main effects model is best fit, no significant interactions in full model anyway
-#Date and Crop both significant, SoilFrac not
+#Date (P=0.0005) and Crop (P=0.004) both significant, SoilFrac not
+difflsmeans(Asco.model.main, ddf="Satterthwaite",type=3,method.grad="simple")
 
 #Basidiomycota analysis
 Basidio.null<-lmer(value~1+(1|Block), data=Basidio.data, REML=FALSE)
@@ -49,6 +50,7 @@ anova(Basidio.model.full)
 #Null model is lowest AIC, but only by 2.  Main effects is next best, significant crop effect
 #No interactions
 #Null may be significant due to 0s in some date/crop/soilFrac combos
+difflsmeans(Basidio.model.main, ddf="Satterthwaite",type=3,method.grad="simple")
 
 #Glomeromycota analysis
 Glom.null<-lmer(value~1+(1|Block), data=Glom.data, REML=FALSE)
@@ -94,5 +96,11 @@ anova(Unk.null,Unk.model.full,Unk.model.main)
 anova(Unk.model.main)
 anova(Unk.model.full)
 #main model is best fit, but full model shows significant Date*SoilFrac interaction
+difflsmeans(Unk.model.main, ddf="Satterthwaite",type=3,method.grad="simple")
 
-
+Unk<-ddply(Unk.data, .(Crop), summarise,.progress="text",
+mean=mean(value),
+high95=boot.high(value),
+low95=boot.low(value)
+)
+Unk
