@@ -49,6 +49,14 @@ return(quantile(boot.mean,(0.025)))
 
 
 #Basidiomycota
+#Crop
+Basidio.Crop<-ddply(Basidio.data, .(Crop), summarise,.progress="text",
+mean=mean(value),
+high95=boot.high(value),
+low95=boot.low(value)
+)
+Basidio.Crop
+
 #order
 #SoilFrac
 Basidio.order<-ddply(Basidio.data, .(SoilFrac, Order), summarise,.progress="text",
@@ -103,6 +111,22 @@ head(Basidio.species)
 ggplot(Basidio.species)+geom_pointrange(aes(x=Species,y=mean,ymax=high95,ymin=low95, color=SoilFrac),position=position_dodge(width=1))+coord_flip()+scale_y_log10()
 
 #Ascomycota
+#Crop
+Asco.Crop<-ddply(Asco.data, .(Crop), summarise,.progress="text",
+mean=mean(value),
+high95=boot.high(value),
+low95=boot.low(value)
+)
+Asco.Crop
+
+#Date
+Asco.Date<-ddply(Asco.data, .(Date), summarise,.progress="text",
+mean=mean(value),
+high95=boot.high(value),
+low95=boot.low(value)
+)
+Asco.Date
+
 #order
 Asco.order<-ddply(Asco.data, .(SoilFrac, Order), summarise,.progress="text",
 mean=mean(value),
