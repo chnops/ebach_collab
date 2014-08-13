@@ -104,13 +104,6 @@ geom_text(data=vectors.ab2,aes(x=arrows.NMDS1,y=arrows.NMDS2,label=names),size=5
 #note, SoilFrac does not support different communities by abundance measure
 ggplot.NMDS(mds.ab, (data.metadata2$Date.x), rainbow(2))
 
-#To Do:
-#Look at mixed models to see which env. variables are changing with crop, date, soil frac
-#all have crop effect
-#emphasize ones without treatment responses, as these may be good drivers of communities (e.g. driving communities beyond treatment effects)
-#Perhaps cropping system differences will be better with WS, and use SoilFrac effects on aggregate-specific measures
-#Bullet point results
-
 #Aggregate Fraction (includes whole soil measures)
 #Presence/Absence
 mds.pa<-metaMDS(decostand(data.metadata[,-c(1:29)],"pa" ),k=6,autotransform=FALSE)
