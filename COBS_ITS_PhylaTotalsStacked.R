@@ -36,6 +36,9 @@ low95=boot.low(total)
 )
 head(Phyla.Crop)
 
+Phyla.Crop<-ddply(Phyla.data2, .(Crop,Phylum), summarise,.progress="text",mean=mean(total),se=sd(total)/(length(total)-1))
+head(Phyla.Crop)
+
 ggplot(Phyla.Crop, aes(Crop, mean, fill=Phylum))+geom_bar(stat="identity")
 
 #Total"values"
@@ -69,6 +72,10 @@ head(Phyla.Crop)
 Phyla.Crop
 
 ggplot(Phyla.Crop, aes(Crop, mean, fill=variable))+geom_bar(stat="identity")
+
+Phyla.Crop<-ddply(Phyla.melt, .(variable), summarise,.progress="text",mean=mean(value),se=sd(value)/(length(value)-1))
+head(Phyla.Crop)
+Phyla.Crop
 
 Phyla.Crop.table<-data.frame(cast(Phyla.melt, variable ~ Crop, mean))
 Phyla.Crop.table
