@@ -78,19 +78,22 @@ data_taxa2<-data_taxa[ which(data_taxa$value>0),]
 head(data_taxa2)
 
 #Calculating percent of unique OTUs micros contribute
-library(compare)
-micros<-subset(data_taxa, data_taxa$SoilFrac=="Micro")
-Others<-data_taxa[data_taxa$SoilFrac %in% c("LM","MM","SM","WS"),]
-head(Others)
-dim(micros)
-dim(Others)
-common<-compare(Others$variable,micros$variable)
-levels(common)
-dim(common)
+SoilFrac.OTU<-ddply(data_taxa, .(SoilFrac~variable), summarise, .progress="text", total=sum(value))
 
-library(sqldf)
-microsNotInOthers<-sqldf('SELECT * From micros EXCEPT SELECT * FROM Others')
-dim(microsNotInOthers)
+library(compare)
+micros<-subset(data_taxa, data_taxa$SoilFrac=="Micro"))
+micros2<-droplevels(micros[which(micros$value>0),])
+micro.OTU<-data.frame(num=1:1337,OTU=levels(micros2$variable))
+str(micro.OTU)
+
+Others<-data.frame(data_taxa[data_taxa$SoilFrac %in% c("LM","MM","SM","WS"),])
+Others2<-droplevels(Others[which(Others$value>0),])
+Others.OTU<-data.frame(num=1:1945, OTU=levels(Others2$variable))
+str(Others.OTU)
+Common.OTU<-merge(micro.OTU,Others.OTU, by="OTU")
+
+head(Common.OTU[1:10,])
+dim(Common.OTU)
 
 #Bootstrap functions from R. Williams
 boot.high<-function(XX){
