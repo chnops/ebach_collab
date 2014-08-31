@@ -22,11 +22,11 @@ head(taxonomy)
 head(data_melt)
 data_taxa<-merge(data_melt,taxonomy,by.x="variable",by.y="X.OTU.ID")
 head(data_taxa)
-data_taxa2<-data_taxa[ which(data_taxa$value>0),]
-head(data_taxa2)
+#data_taxa2<-data_taxa[ which(data_taxa$value>0),]
+#head(data_taxa2)
 #??For Presence/Absence should be taking out all the 0's??  Doesn't seem to change story, but keep thinking about this.
 #Tried with and without 0 removal step, same story, cleaner figure with 0s out
-data_phyla<-data.frame(cast(data_taxa2, SampleName~Phylum, value="value", fun.aggregate=sum, add.missing=TRUE))
+data_phyla<-data.frame(cast(data_taxa, SampleName~Phylum, value="value", fun.aggregate=sum, add.missing=TRUE))
 head(data_phyla)
 head(data.nosing.rar[,1:10])
 merged_taxa<-merge(data_phyla, data.nosing.rar, by="SampleName")
@@ -34,7 +34,7 @@ dim(merged_taxa)
 dim(data.nosing.rar)
 names(merged_taxa[,1:30])
 
-Basidio.data<-subset(data_taxa2, data_taxa2$Phylum=="p__Basidiomycota")
+Basidio.data<-subset(data_taxa, data_taxa$Phylum=="p__Basidiomycota")
 
 #NMDS plotting function, from R. Williams
 ggplot.NMDS<-function(XX,ZZ,COLORS){
@@ -69,40 +69,40 @@ X1
 mds.pa<-metaMDS(decostand(merged_taxa[,-c(1:11)],"pa" ),k=6,autotransform=FALSE, na.rm=TRUE)
 
 #Figure summarizing target taxa in presence/absence NMDS, removing outliers
-Limonomyces<-subset(data_taxa2, data_taxa2$Genus=="g__Limonomyces")
+Limonomyces<-subset(data_taxa, data_taxa$Genus=="g__Limonomyces")
 head(Limonomyces)
 Limonomyces.value<-data.frame(cast(Limonomyces, SampleName~Genus, value="value", fun.aggregate=sum, add.mising=TRUE))
 head(Limonomyces.value)
-Atheliales<-subset(data_taxa2, data_taxa2$Order=="o__Atheliales")
+Atheliales<-subset(data_taxa, data_taxa$Order=="o__Atheliales")
 head(Atheliales)
 Atheliales.value<-data.frame(cast(Atheliales, SampleName~Order, value="value", fun.aggregate=sum, add.mising=TRUE))
 head(Atheliales.value)
 UnkBasidio<-subset(Basidio.data, Basidio.data$Order=="") #Note see Basidio code above for "Basidio.data"
 UnkBasidio.value<-data.frame(cast(UnkBasidio, SampleName~Order, value="value", fun.aggregate=sum, add.mising=TRUE))
 head(UnkBasidio.value)
-Thanatephorus<-subset(data_taxa2, data_taxa2$Genus=="g__Thanatephorus")
+Thanatephorus<-subset(data_taxa, data_taxa$Genus=="g__Thanatephorus")
 Thanatephorus.value<-subset(data.frame(cast(Thanatephorus, SampleName~Genus, value="value", fun.aggregate=sum, add.mising=TRUE)), g__Thanatephorus<125)
 head(Thanatephorus.value)
-Psathyrellaceae<-subset(data_taxa2, data_taxa2$Family=="f__Psathyrellaceae")
+Psathyrellaceae<-subset(data_taxa, data_taxa$Family=="f__Psathyrellaceae")
 Psathyrellaceae.value<-data.frame(cast(Psathyrellaceae, SampleName~Family, value="value", fun.aggregate=sum, add.mising=TRUE))
 head(Psathyrellaceae.value)
 Psathyrellaceae.value2<-Psathyrellaceae.value[-13,]
-Strophariaceae<-subset(data_taxa2, data_taxa2$Family=="f__Strophariaceae")
+Strophariaceae<-subset(data_taxa, data_taxa$Family=="f__Strophariaceae")
 Strophariaceae.value<-data.frame(cast(Strophariaceae, SampleName~Family, value="value", fun.aggregate=sum, add.mising=TRUE))
 head(Strophariaceae.value)
-Peziza<-subset(data_taxa2, data_taxa2$Genus=="g__Peziza")
+Peziza<-subset(data_taxa, data_taxa$Genus=="g__Peziza")
 head(Peziza)
 Peziza.value<-data.frame(cast(Peziza, SampleName~Genus, value="value", fun.aggregate=sum, add.mising=TRUE))
 head(Peziza.value)
-Bionectriaceae<-subset(data_taxa2, data_taxa2$Family=="f__Bionectriaceae")
+Bionectriaceae<-subset(data_taxa, data_taxa$Family=="f__Bionectriaceae")
 Bionectriaceae.value<-data.frame(cast(Bionectriaceae, SampleName~Family, value="value", fun.aggregate=sum, add.mising=TRUE))
 head(Bionectriaceae.value)
 Bionectriaceae.value2<-Bionectriaceae.value[-20,]
-Glomerales<-subset(data_taxa2, data_taxa2$Order=="o__Glomerales")
+Glomerales<-subset(data_taxa, data_taxa$Order=="o__Glomerales")
 head(Glomerales)
 Glomerales.value<-data.frame(cast(Glomerales, SampleName~Order, value="value", fun.aggregate=sum, add.mising=TRUE))
 head(Glomerales.value)
-Operculomyces<-subset(data_taxa2, data_taxa2$Genus=="g__Operculomyces")
+Operculomyces<-subset(data_taxa, data_taxa$Genus=="g__Operculomyces")
 Operculomyces.value<-data.frame(cast(Operculomyces, SampleName~Genus, value="value", fun.aggregate=sum, add.mising=TRUE))
 head(Operculomyces.value)
 SampleInfo<-data.nosing.rar[1:5]
