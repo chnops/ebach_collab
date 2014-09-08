@@ -52,7 +52,7 @@ return(quantile(boot.mean,(0.025)))
 #Crop
 Basidio.Crop<-ddply(Basidio.data, .(Crop), summarise,.progress="text",
 mean=mean(value),
-high95=boot.high(value),
+high95=boot.high(value),N=length(value),SE=(sd(value)/sqrt(N-1)),
 low95=boot.low(value)
 )
 Basidio.Crop
@@ -62,7 +62,7 @@ Basidio.Crop
 Basidio.order<-ddply(Basidio.data, .(SoilFrac, Order), summarise,.progress="text",
 mean=mean(value),
 high95=boot.high(value),
-low95=boot.low(value)
+low95=boot.low(value), 
 )
 head(Basidio.order)
 
@@ -115,7 +115,7 @@ ggplot(Basidio.species)+geom_pointrange(aes(x=Species,y=mean,ymax=high95,ymin=lo
 Asco.Crop<-ddply(Asco.data, .(Crop), summarise,.progress="text",
 mean=mean(value),
 high95=boot.high(value),
-low95=boot.low(value)
+low95=boot.low(value),N=length(value),SE=(sd(value)/sqrt(N-1))
 )
 Asco.Crop
 
@@ -181,6 +181,13 @@ list(unique(Asco.species$Genus))
 ggplot(Asco.species)+geom_pointrange(aes(x=Species,y=mean,ymax=high95,ymin=low95, color=SoilFrac),position=position_dodge(width=1))+coord_flip()+scale_y_log10()
 
 #Glomeromycota
+Glom.Crop<-ddply(Glom.data, .(Crop), summarise,.progress="text",
+mean=mean(value),
+high95=boot.high(value),
+low95=boot.low(value),N=length(value),SE=(sd(value)/sqrt(N-1))
+)
+Glom.Crop
+
 #Order
 Glom.order<-ddply(Glom.data, .(SoilFrac, Order), summarise,.progress="text",
 mean=mean(value),
@@ -190,6 +197,16 @@ low95=boot.low(value)
 head(Glom.order)
 
 ggplot(Glom.order)+geom_pointrange(aes(x=Order,y=mean,ymax=high95,ymin=low95, color=SoilFrac),position=position_dodge(width=1))+coord_flip()+scale_y_log10()
+
+#Glomerales
+Glom.glom<-subset(Glom.data, Glom.data$Order=="o__Glomerales")
+Glom.glom
+Gloms.Crop<-ddply(Glom.glom, .(Crop), summarise,.progress="text",
+mean=mean(value),
+high95=boot.high(value),
+low95=boot.low(value),N=length(value),SE=(sd(value)/sqrt(N-1))
+)
+head(Gloms.Crop)
 
 #Family
 Glom.family<-ddply(Glom.data, .(SoilFrac, Family), summarise,.progress="text",
@@ -212,6 +229,13 @@ head(Glom.species)
 ggplot(Glom.species)+geom_pointrange(aes(x=Species,y=mean,ymax=high95,ymin=low95, color=SoilFrac),position=position_dodge(width=1))+coord_flip()+scale_y_log10()
 
 #Zygomycota
+Zygo.Crop<-ddply(Zygo.data, .(Crop), summarise,.progress="text",
+mean=mean(value),
+high95=boot.high(value),
+low95=boot.low(value),N=length(value),SE=(sd(value)/sqrt(N-1))
+)
+head(Zygo.Crop)
+
 #order
 Zygo.order<-ddply(Zygo.data, .(SoilFrac, Order), summarise,.progress="text",
 mean=mean(value),
@@ -243,6 +267,13 @@ head(Zygo.species)
 ggplot(Zygo.species)+geom_pointrange(aes(x=Species,y=mean,ymax=high95,ymin=low95, color=SoilFrac),position=position_dodge(width=1))+coord_flip()+scale_y_log10()
 
 #Chytridiomycota
+Chytri.Crop<-ddply(Chytri.data, .(Crop), summarise,.progress="text",
+mean=mean(value),
+high95=boot.high(value),
+low95=boot.low(value),N=length(value),SE=(sd(value)/sqrt(N-1))
+)
+head(Chytri.Crop)
+
 #order
 Chytri.order<-ddply(Chytri.data, .(SoilFrac, Order), summarise,.progress="text",
 mean=mean(value),
