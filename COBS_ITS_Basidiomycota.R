@@ -29,6 +29,17 @@ anova(Basidio.model.full)
 #Order as a variable is higly significant
 #Zoom-in, focus on Corticiales, Agaricales (most abundant), and Hymenochaetales, Geastrales, Cantharellaes (most different among fractions)
 
+#Unknown Basidio
+Basidio.unk<-subset(Basidio.data, Basidio.data$Class=="")
+head(Basidio.unk)
+Unk.Crop<-ddply(Basidio.unk, .(Crop), summarise,.progress="text",
+mean=mean(value),
+high95=boot.high(value),N=length(value),SE=(sd(value)/sqrt(N-1)),
+low95=boot.low(value)
+)
+Unk.Crop
+
+
 #Order corticiales
 Basidio.corti<-subset(Basidio.data, Basidio.data$Order=="o__Corticiales")
 head(Basidio.corti)
@@ -46,6 +57,13 @@ AICtab(Basidio.null,Basidio.model.full,Basidio.model.main)
 anova(Basidio.model.main)
 anova(Basidio.model.full)
 #No factors or interactions significant
+Limono.Crop<-ddply(Basidio.corti, .(Crop), summarise,.progress="text",
+mean=mean(value),
+high95=boot.high(value),N=length(value),SE=(sd(value)/sqrt(N-1)),
+low95=boot.low(value)
+)
+Limono.Crop
+
 
 #Order Agaricales
 Basidio.agari<-subset(Basidio.data, Basidio.data$Order=="o__Agaricales")
@@ -142,7 +160,7 @@ difflsmeans(Basidio.model.main, ddf="Satterthwaite",type=3,method.grad="simple")
 Psath.crop<-ddply(Basidio.psath, .(Crop), summarise,.progress="text",
 mean=mean(value),
 high95=boot.high(value),
-low95=boot.low(value)
+low95=boot.low(value),N=length(value),SE=(sd(value)/sqrt(N-1))
 )
 Psath.crop
 #Family Inocybaceae
@@ -165,8 +183,8 @@ anova(Basidio.model.main)
 anova(Basidio.model.full)
 #Full model detects significant Date*Crop*SoilFrac interaction P=0.002, 
 #main effects, crop highly significant, P=0.003
-Basidio.strophFig<-ddply(Basidio.stroph, .(Crop, Species), summarise,.progress="text",mean=mean(value),high95=boot.high(value),
-low95=boot.low(value)
+Basidio.strophFig<-ddply(Basidio.stroph, .(Crop), summarise,.progress="text",mean=mean(value),high95=boot.high(value),
+low95=boot.low(value),N=length(value),SE=(sd(value)/sqrt(N-1))
 )
 head(Basidio.strophFig)
 ggplot(Basidio.strophFig)+geom_pointrange(aes(x=Species,y=mean,ymax=high95,ymin=low95, color=Crop),position=position_dodge(width=1))+coord_flip()+scale_y_log10()
@@ -281,7 +299,7 @@ difflsmeans(Basidio.model.main, ddf="Satterthwaite",type=3,method.grad="simple")
 Than.crop<-ddply(Basidio.than, .(Crop), summarise,.progress="text",
 mean=mean(value),
 high95=boot.high(value),
-low95=boot.low(value)
+low95=boot.low(value),N=length(value),SE=(sd(value)/sqrt(N-1))
 )
 Than.crop
 

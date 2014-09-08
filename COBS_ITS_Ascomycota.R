@@ -46,8 +46,8 @@ anova(Asco.model.full)
 difflsmeans(Asco.model.main, ddf="Satterthwaite",type=3,method.grad="simple")
 #Significant effect of Date: Oct>July (P=0.02)
 #Significant effect of Crop: PF>P=CC (P=0.0005)
-Asco.orbiC<-ddply(Asco.orbi, .(Crop, Genus), summarise,.progress="text",mean=mean(value),high95=boot.high(value),
-low95=boot.low(value)
+Asco.orbiC<-ddply(Asco.orbi, .(Crop), summarise,.progress="text",mean=mean(value),high95=boot.high(value),
+low95=boot.low(value),N=length(value),SE=(sd(value)/sqrt(N-1))
 )
 head(Asco.orbiC)
 ggplot(Asco.orbiC)+geom_pointrange(aes(x=Species,y=mean,ymax=high95,ymin=low95, color=Crop),position=position_dodge(width=1))+coord_flip()+scale_y_log10())
@@ -136,8 +136,8 @@ head(Asco.pezSF)
 ggplot(Asco.pezSF)+geom_pointrange(aes(x=Species,y=mean,ymax=high95,ymin=low95, color=SoilFrac),position=position_dodge(width=1))+coord_flip()+scale_y_log10()
 #Peziza varia is common wood-decomposition cup fungus
 #Only found in CC and PF plots, again no P indicating fertilizer effect or fluke?  No diff in CC and PF
-Asco.pezC<-ddply(Asco.pez, .(Crop, Species), summarise,.progress="text",mean=mean(value),high95=boot.high(value),
-low95=boot.low(value)
+Asco.pezC<-ddply(Asco.pez, .(Crop), summarise,.progress="text",mean=mean(value),high95=boot.high(value),
+low95=boot.low(value),N=length(value),SE=(sd(value)/sqrt(N-1))
 )
 head(Asco.pezC)
 ggplot(Asco.pezC)+geom_pointrange(aes(x=Species,y=mean,ymax=high95,ymin=low95, color=Crop),position=position_dodge(width=1))+coord_flip()+scale_y_log10()
@@ -225,7 +225,7 @@ anova(Asco.model.full)
 #No interactions, Crop significant (P=0.04), PF=CC>P, all observations are Trichoderma citrinoviride, except 1 unk
 difflsmeans(Asco.model.main, ddf="Satterthwaite",type=3,method.grad="simple")
 Asco.hypoC<-ddply(Asco.hypoc, .(Crop, Species), summarise,.progress="text",mean=mean(value),high95=boot.high(value),
-low95=boot.low(value)
+low95=boot.low(value),N=length(value),SE=(sd(value)/sqrt(N-1))
 )
 head(Asco.hypoC)
 ggplot(Asco.hypoC)+geom_pointrange(aes(x=Species,y=mean,ymax=high95,ymin=low95, color=Crop),position=position_dodge(width=1))+coord_flip()+scale_y_log10()
