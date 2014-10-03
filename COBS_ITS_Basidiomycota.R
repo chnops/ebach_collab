@@ -293,3 +293,13 @@ Basidio.athe
 #All identified as single species, Athelia bombacina, which is a sapbrob on Norway Spruce litter?
 #Only present in P13, P31, and PF23, mostly SM, but also a couple of LM, micro, and 1 WS
 #Abundance 6-52
+
+#unk Basidio
+Basidio.unk<-subset(Basidio.data, Basidio.data$Order=="")
+Basidio.null<-lmer(value~1+(1|Block), data=Basidio.unk, REML=FALSE)
+Basidio.model.full<-lmer(value~Date*Crop*SoilFrac+(1|Block), data=Basidio.unk, REML=FALSE)
+Basidio.model.main<-lmer(value~Date+Crop+SoilFrac+(1|Block), data=Basidio.unk, REML=FALSE)
+AICtab(Basidio.null,Basidio.model.full,Basidio.model.main)
+anova(Basidio.model.main)
+difflsmeans(Basidio.model.main, ddf="Satterthwaite",type=3,method.grad="simple")
+
