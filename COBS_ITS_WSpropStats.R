@@ -29,8 +29,9 @@ ggplot(div_stats)+geom_histogram(aes(richness))
 #keeping log transformation helps normalize data
 
 #Richness
-summary(test<-aov(richness~Date+Crop+SoilFrac, data=div_stats))
+summary(test<-aov(Richness~Date+Crop+SoilFrac, data=div_stats))
 TukeyHSD(test)
+anova(test)
 #SoilFrac is highly significant (P<0.0001), WSprop>>micro>MM, WS, LM; SM=to all fractions
 
 #Eveness
@@ -38,7 +39,7 @@ summary(test<-aov(evenness~Date+Crop+SoilFrac, data=div_stats))
 #No effects of any factor
 
 #Shannons
-summary(test<-aov(shannons~Date+Crop+SoilFrac, data=div_stats))
+summary(test<-aov(Shannon~Date+Crop+SoilFrac, data=div_stats))
 TukeyHSD(test)
 #SoilFrac highly significant (P<0.0001), Crop on cusp (P=0.056)
 #WSprop=micro=SM>MM=LM=WS;  micro>LM, but no other fraction sig.
@@ -67,7 +68,7 @@ Div.data<-melt(div_stats, id=c("SampleName","Date","Year","Crop","Block","SoilFr
 head(Div.data)
 
 Div.sum<-ddply(Div.data, .(SoilFrac,variable), summarise,.progress="text",
-mean=mean(value),
+mean=mean(value),se=sd(value)/(sqrt(length(value)-1)),
 high95=boot.high(value),
 low95=boot.low(value)
 )
@@ -81,4 +82,12 @@ print(levels(Div.sum2$sizes))
 
 ggplot(Div.sum2)+geom_pointrange(aes(x=sizes,y=mean,ymin=low95,ymax=high95), size=1)+facet_wrap(~variable, scales="free",ncol=3)+theme_bw()+
 theme(aspect.ratio=1,text=element_text(face=2, size=20), panel.grid=element_blank(), panel.border=element_rect(size=3, colour="black"), legend.position="none", axis.ticks=element_line(size=2), axis.text.x=element_text(size=18, face="bold", colour="black", angle=30, vjust=0.8, hjust=0.75), strip.background=element_blank(), strip.text=element_text(size=20, face="bold"),axis.title=element_blank())
+
+#Without WS prop & SE instead of 95% CI
+Div.sum3<-Div.sum2[Div.sum2$SoilFrac %in% c("LM","MM","SM","micro","WS"),]
+head(Div.sum3)
+
+ggplot(Div.sum3)+geom_pointrange(aes(x=sizes,y=mean,ymin=mean-se,ymax=mean+se), size=1)+facet_wrap(~variable, scales="free",ncol=3)+theme_bw()+
+theme(aspect.ratio=1,text=element_text(face=2, size=20), panel.grid=element_blank(), panel.border=element_rect(size=3, colour="black"), legend.position="none", axis.ticks=element_line(size=2), axis.text.x=element_text(size=18, face="bold", colour="black", angle=30, vjust=0.8, hjust=0.75), strip.background=element_blank(), strip.text=element_text(size=20, face="bold"),axis.title=element_blank())
+
 
