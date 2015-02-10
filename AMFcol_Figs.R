@@ -36,7 +36,7 @@ print(Pcol.2012)
 #for multipanel fig (no legend)
 Pcol.2012a<-ggplot()+geom_pointrange(data=Pcol.matrix, aes(x=Date, y=mean, ymin=mean-SE, ymax=mean+SE, shape=Crop), fill="black", color="black", size=1.25)+theme_bw()+
 theme(aspect.ratio=1, axis.text=element_text(size=16, face="bold", colour="black"), axis.line=element_line(size=2), panel.border=element_blank(), panel.grid=element_blank(), legend.position="none",axis.ticks=element_line(size=2), strip.background=element_blank(),axis.title.x=element_blank(), axis.title.y=element_text(size=18, face="bold", colour="black"))+
-ylab(ylab)+scale_shape_manual(values=shapes)
+ylab(ylab)+scale_shape_manual(values=shapes)+coord_cartesian(ylim=c(0,100))
 #+annotate("text", label="C)", x=0.7, y=95, cex=8)
 print(Pcol.2012a)
 
@@ -59,7 +59,7 @@ print(Pves.2012)
 #for multipanel fig (no legend)
 Pves.2012b<-ggplot()+geom_pointrange(data=Pves.matrix, aes(x=Date, y=mean, ymin=mean-SE, ymax=mean+SE, shape=Crop), fill="black", color="black", size=1.25)+theme_bw()+
 theme(aspect.ratio=1, axis.text=element_text(size=16, face="bold", colour="black"), axis.line=element_line(size=2), panel.border=element_blank(), panel.grid=element_blank(), legend.position="none",axis.ticks=element_line(size=2), strip.background=element_blank(),axis.title.x=element_blank(), axis.title.y=element_text(size=18, face="bold", colour="black"))+
-ylab(ylab)+scale_shape_manual(values=shapes)
+ylab(ylab)+scale_shape_manual(values=shapes)+coord_cartesian(ylim=c(0,100))
 #+annotate("text", label="C)", x=0.7, y=95, cex=8)
 print(Pves.2012b)
 
@@ -81,7 +81,7 @@ print(Phyphae.2012)
 #For multipanel figure (legend position adjusted)
 Phyphae.2012c<-ggplot()+geom_pointrange(data=Phyphae.matrix, aes(x=Date, y=mean, ymin=mean-SE, ymax=mean+SE, shape=Crop), fill="black", color="black", size=1.25)+theme_bw()+
 theme(aspect.ratio=1, axis.text=element_text(size=16, face="bold", colour="black"), axis.line=element_line(size=2), panel.border=element_blank(), panel.grid=element_blank(), legend.position=c(0.2,1.2), legend.background=element_blank(), legend.text=element_text(size=16, face="bold"),legend.key=element_blank(),legend.title=element_blank(),axis.ticks=element_line(size=2), strip.background=element_blank(),axis.title.x=element_blank(), axis.title.y=element_text(size=18, face="bold", colour="black"))+
-ylab(ylab)+scale_shape_manual(values=shapes)
+ylab(ylab)+scale_shape_manual(values=shapes)+coord_cartesian(ylim=c(0,100))
 #+annotate("text", label="C)", x=0.7, y=95, cex=8)
 print(Phyphae.2012c)
 

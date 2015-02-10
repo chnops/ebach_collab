@@ -23,7 +23,12 @@ color.4<-rgb(56,20,15, max=255)
 color.5<-rgb(18,101,47, max=255)
 colors.agg<-c(color.1,color.2,color.3,color.4,color.5)
 
+<<<<<<< HEAD
 colors.Ryan<-c("red","black","purple","blue","gray")
+=======
+#Aggregate colors:  Ryan Williams
+colors.agg<-c("red","black","purple","blue","gray")
+>>>>>>> ebach_edits
 
 #NMDS plotting function, from R. Williams
 ggplot.NMDS<-function(XX,ZZ,COLORS){
@@ -88,6 +93,7 @@ theme(axis.line=element_line(size=2), aspect.ratio=1, panel.border=element_blank
 
 PA.Crop
 
+<<<<<<< HEAD
 #For presenetation, no vectors
 
 PA.Crop2<-ggplot.NMDS(mds.pa, (taxa.interest$Crop), colors.crop)+coord_cartesian(xlim=c(-1.45,1.3),ylim=c(-1.2,1.1))+
@@ -99,6 +105,15 @@ geom_text(data=vect.CN,aes(x=arrows.NMDS1,y=arrows.NMDS2,label=names),hjust=0.25
 
 PA.Crop2
 
+=======
+#For Presentation
+
+PA.Crop<-ggplot.NMDS(mds.pa, (taxa.interest$Crop), colors.crop)+geom_point(data=IntVectors3, aes(x=arrows.NMDS1,y=arrows.NMDS2),colour="darkorange4",size=5,inherit_aes=FALSE)+
+geom_segment(data=vect.CN, aes(x=0,xend=arrows.NMDS1,y=0,yend=arrows.NMDS2),arrow=arrow(length = unit(0.35, "cm")),colour="darkorange4",size=1.5,inherit_aes=FALSE)+
+coord_cartesian(xlim=c(-1.45,1.3),ylim=c(-1.2,1.1))+theme(axis.line=element_line(size=2), aspect.ratio=1, panel.border=element_blank(),axis.ticks=element_line(size=2, colour="black"), legend.position=c(0.87, 0.9), legend.background=element_blank(), legend.text=element_text(size=20, face="bold"),legend.key=element_blank(),legend.title=element_blank(),panel.background=element_blank(), axis.text=element_text(size=20, face="bold", colour="black"), axis.title=element_text(size=22, face="bold", colour="black"))
+
+PA.Crop
+>>>>>>> ebach_edits
 
 #altering NMDS plotting function, from R. Williams to include only LM, micro fraction centroids, which are only 2 statistically diff.
 ggplot.NMDS2<-function(XX,ZZ,COLORS){
@@ -147,9 +162,17 @@ X1
 #Figure Draft, includes LM, Micro (stat. diff community (dispersion))+stat. sig environmental vectors + stat. sig. taxa centroids!
 
 PA.SoilFrac<-ggplot.NMDS2(mds.pa, (taxa.interest$SoilFrac), colors.agg)+geom_point(data=vect.Stroph, aes(x=arrows.NMDS1,y=arrows.NMDS2),colour="darkgrey",size=3,inherit_aes=FALSE)+
-geom_text(data=vect.Stroph,aes(x=arrows.NMDS1,y=arrows.NMDS2,label=names),vjust=1.5,hjust=0.5,size=4,fontface="bold")+geom_segment(data=vect.CN, aes(x=0,xend=arrows.NMDS1,y=0,yend=arrows.NMDS2),arrow=arrow(length = unit(0.35, "cm")),colour="darkgrey",size=1,inherit_aes=FALSE)+
-geom_text(data=vect.CN,aes(x=arrows.NMDS1,y=arrows.NMDS2,label=names),hjust=0.75,vjust=1,size=4,fontface="bold")+annotate("text", label="A)", x=-1.2, y=0.95, cex=8, font=2)+coord_cartesian(xlim=c(-1.45,1.3),ylim=c(-1.2,1.1))+
-theme(axis.line=element_line(size=2), aspect.ratio=1, panel.border=element_blank(),axis.ticks=element_line(size=2, colour="black"), legend.position=c(0.8, 0.85), legend.background=element_blank(), legend.text=element_text(size=12, face="bold"),legend.key=element_blank(),legend.title=element_blank(),panel.background=element_blank(), axis.text=element_text(size=16, face="bold", colour="black"), axis.title=element_text(size=18, face="bold", colour="black"))
+geom_text(data=vect.CN,aes(x=arrows.NMDS1,y=arrows.NMDS2,label=names),hjust=0.75,vjust=1,size=4,fontface="bold")+geom_text(data=vect.Stroph,aes(x=arrows.NMDS1,y=arrows.NMDS2,label=names),vjust=1.5,hjust=0.5,size=4,fontface="bold")+geom_segment(data=vect.CN, aes(x=0,xend=arrows.NMDS1,y=0,yend=arrows.NMDS2),arrow=arrow(length = unit(0.35, "cm")),colour="darkgrey",size=1,inherit_aes=FALSE)+
+annotate("text", label="A)", x=-1.2, y=0.95, cex=8, font=2)+coord_cartesian(xlim=c(-1.45,1.3),ylim=c(-1.2,1.1))+
+theme(axis.line=element_line(size=2), aspect.ratio=1, panel.border=element_blank(),axis.ticks=element_line(size=2, colour="black"), legend.position=c(0.9, 0.9), legend.background=element_blank(), legend.text=element_text(size=12, face="bold"),legend.key=element_blank(),legend.title=element_blank(),panel.background=element_blank(), axis.text=element_text(size=16, face="bold", colour="black"), axis.title=element_text(size=18, face="bold", colour="black"))
+
+PA.SoilFrac
+
+#Version for presentation
+
+PA.SoilFrac<-ggplot.NMDS2(mds.pa, (taxa.interest$SoilFrac), colors.agg)+geom_point(data=vect.Stroph, aes(x=arrows.NMDS1,y=arrows.NMDS2),colour="darkorange4",size=5,inherit_aes=FALSE)+
+geom_text(data=vect.Stroph,aes(x=arrows.NMDS1,y=arrows.NMDS2,label=names),vjust=1.5,hjust=0.5,size=4,fontface="bold")+geom_segment(data=vect.CN, aes(x=0,xend=arrows.NMDS1,y=0,yend=arrows.NMDS2),arrow=arrow(length = unit(0.35, "cm")),colour="darkorange4",size=1.5,inherit_aes=FALSE)+
+coord_cartesian(xlim=c(-1.45,1.3),ylim=c(-1.2,1.1))+theme(axis.line=element_line(size=2), aspect.ratio=1, panel.border=element_blank(),axis.ticks=element_line(size=2, colour="black"), legend.position="none",panel.background=element_blank(), axis.text=element_text(size=16, face="bold", colour="black"), axis.title=element_text(size=18, face="bold", colour="black"))
 
 PA.SoilFrac
 
@@ -199,6 +222,7 @@ theme(axis.line=element_line(size=2), aspect.ratio=1, panel.border=element_blank
 
 Abund.Crop
 
+<<<<<<< HEAD
 #For presentation
 Abund.Crop<-ggplot.NMDS(mds.ab, (data.metadata2$Crop.x), colors.crop)+
 coord_cartesian(xlim=c(-1.4,1.3))+theme(axis.line=element_line(size=2), aspect.ratio=1, panel.border=element_blank(),axis.ticks=element_line(size=2, colour="black"), legend.position=c(0.1, 0.1), legend.background=element_blank(), legend.text=element_text(size=12, face="bold"),legend.key=element_blank(),legend.title=element_blank(),panel.background=element_blank(), axis.text=element_text(size=16, face="bold", colour="black"), axis.title=element_text(size=18, face="bold", colour="black"))
@@ -206,6 +230,13 @@ coord_cartesian(xlim=c(-1.4,1.3))+theme(axis.line=element_line(size=2), aspect.r
 +geom_segment(data=vectors.ab3, aes(x=0,xend=arrows.NMDS1,y=0,yend=arrows.NMDS2),arrow=arrow(length = unit(0.35, "cm")),colour="darkgrey",size=1,inherit_aes=FALSE)+
 geom_point(data=IntVectors2ab, aes(x=arrows.NMDS1,y=arrows.NMDS2),colour="darkgrey",size=3,inherit_aes=FALSE)+geom_text(data=IntVectors2ab,aes(x=arrows.NMDS1,y=arrows.NMDS2,label=names),vjust=-1,hjust=0.5,size=4,fontface="bold")+
 geom_text(data=vectors.ab3,aes(x=arrows.NMDS1,y=arrows.NMDS2,label=names),hjust=0,vjust=-0.25,size=4,fontface="bold")+
+=======
+#For Presentation
+
+Abund.Crop<-ggplot.NMDS(mds.ab, (data.metadata2$Crop.x), colors.crop)+geom_segment(data=vectors.ab3, aes(x=0,xend=arrows.NMDS1,y=0,yend=arrows.NMDS2),arrow=arrow(length = unit(0.35, "cm")),colour="darkorange4",size=1.5,inherit_aes=FALSE)+
+geom_point(data=IntVectors2ab, aes(x=arrows.NMDS1,y=arrows.NMDS2),colour="darkorange4",size=5,inherit_aes=FALSE)+
+coord_cartesian(xlim=c(-1.4,1.3))+theme(axis.line=element_line(size=2), aspect.ratio=1, panel.border=element_blank(),axis.ticks=element_line(size=2, colour="black"), legend.position="none",panel.background=element_blank(), axis.text=element_text(size=20, face="bold", colour="black"), axis.title=element_text(size=22, face="bold", colour="black"))
+>>>>>>> ebach_edits
 
 Abund.Crop
 

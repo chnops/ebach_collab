@@ -2,19 +2,21 @@
 #COBS_ITS:  Diversity stats including WSprop
 #4 Aug. 2014
 
+rm(list=ls())
 library(plyr)
+library(vegan)
 
 #Code originates from R. Williams (see diversity_stas.R)
 #Use "ITS_WSprop.csv" for data
 #? Is this data already rarified?
 dataset<-read.csv(file.choose())
 
-richness<-fisher.alpha(dataset[,-c(1:6)],1)
-head(richness)
-shannons<-diversity(dataset[,-c(1:6)])
-evenness<-shannons/log(richness)
-hist(richness)
-div_stats<-data.frame(dataset[,1:6],richness,shannons,evenness)
+Richness<-fisher.alpha(dataset[,-c(1:6)],1)
+head(Richness)
+Shannon<-diversity(dataset[,-c(1:6)])
+Evenness<-Shannon/log(Richness)
+hist(Richness)
+div_stats<-data.frame(dataset[,1:6],Richness,Shannon,Evenness)
 head(div_stats)
 
 #looking at data distribution
@@ -27,8 +29,9 @@ ggplot(div_stats)+geom_histogram(aes(richness))
 #keeping log transformation helps normalize data
 
 #Richness
-summary(test<-aov(richness~Date+Crop+SoilFrac, data=div_stats))
+summary(test<-aov(Richness~Date+Crop+SoilFrac, data=div_stats))
 TukeyHSD(test)
+anova(test)
 #SoilFrac is highly significant (P<0.0001), WSprop>>micro>MM, WS, LM; SM=to all fractions
 
 #Eveness
@@ -36,7 +39,7 @@ summary(test<-aov(evenness~Date+Crop+SoilFrac, data=div_stats))
 #No effects of any factor
 
 #Shannons
-summary(test<-aov(shannons~Date+Crop+SoilFrac, data=div_stats))
+summary(test<-aov(Shannon~Date+Crop+SoilFrac, data=div_stats))
 TukeyHSD(test)
 #SoilFrac highly significant (P<0.0001), Crop on cusp (P=0.056)
 #WSprop=micro=SM>MM=LM=WS;  micro>LM, but no other fraction sig.
@@ -65,13 +68,26 @@ Div.data<-melt(div_stats, id=c("SampleName","Date","Year","Crop","Block","SoilFr
 head(Div.data)
 
 Div.sum<-ddply(Div.data, .(SoilFrac,variable), summarise,.progress="text",
-mean=mean(value),
+mean=mean(value),se=sd(value)/(sqrt(length(value)-1)),
 high95=boot.high(value),
 low95=boot.low(value)
 )
 head(Div.sum)
-print(levels(Div.sum$SoilFrac))
-Div.sum$SoilFrac=factor(Div.sum$SoilFrac, levels(Div.sum$SoilFrac)[c(2,4,3,1,5,6)])
-print(levels(Div.sum$SoilFrac))
+sizes<-c(">2000",">2000",">2000","<250","<250","<250","1000-2000","1000-2000","1000-2000","250-1000","250-1000","250-1000","Whole Soil","Whole Soil","Whole Soil","WS prop","WS prop","WS prop")
+Div.sum2<-data.frame(sizes, Div.sum)
+head(Div.sum2)
+print(levels(Div.sum2$sizes))
+Div.sum2$sizes=factor(Div.sum2$sizes, levels(Div.sum2$sizes)[c(1,4,3,2,5,6)])
+print(levels(Div.sum2$sizes))
 
-ggplot(Div.sum)+geom_pointrange(aes(x=SoilFrac,y=mean,ymin=low95,ymax=high95))+facet_wrap(~variable, scales="free",ncol=3)+theme_bw()+theme(aspect.ratio=1)
+ggplot(Div.sum2)+geom_pointrange(aes(x=sizes,y=mean,ymin=low95,ymax=high95), size=1)+facet_wrap(~variable, scales="free",ncol=3)+theme_bw()+
+theme(aspect.ratio=1,text=element_text(face=2, size=20), panel.grid=element_blank(), panel.border=element_rect(size=3, colour="black"), legend.position="none", axis.ticks=element_line(size=2), axis.text.x=element_text(size=18, face="bold", colour="black", angle=30, vjust=0.8, hjust=0.75), strip.background=element_blank(), strip.text=element_text(size=20, face="bold"),axis.title=element_blank())
+
+#Without WS prop & SE instead of 95% CI
+Div.sum3<-Div.sum2[Div.sum2$SoilFrac %in% c("LM","MM","SM","micro","WS"),]
+head(Div.sum3)
+
+ggplot(Div.sum3)+geom_pointrange(aes(x=sizes,y=mean,ymin=mean-se,ymax=mean+se), size=1)+facet_wrap(~variable, scales="free",ncol=3)+theme_bw()+
+theme(aspect.ratio=1,text=element_text(face=2, size=20), panel.grid=element_blank(), panel.border=element_rect(size=3, colour="black"), legend.position="none", axis.ticks=element_line(size=2), axis.text.x=element_text(size=18, face="bold", colour="black", angle=30, vjust=0.8, hjust=0.75), strip.background=element_blank(), strip.text=element_text(size=20, face="bold"),axis.title=element_blank())
+
+
