@@ -27,6 +27,7 @@ data.metadata<-merge(metadata, data.nosing.rar, by="SampleName")
 head(data.metadata[,1:30])
 str(data.metadata[,6:26])
 
+
 #subset to remove environmental variables only measured at WS level
 metadata.agg<-cbind(data.metadata[1:6],data.metadata[8],data.metadata[16:20],data.metadata[23:25])
 head(metadata.agg)
