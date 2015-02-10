@@ -12,23 +12,30 @@ head(data_taxa)
 data_taxa2<-data_taxa[ which(data_taxa$value>0),]
 head(data_taxa2)
 
-Zygo.data<-subset(data_taxa2, data_taxa2$Phylum=="p__Zygomycota")
+Zygo.data<-droplevels(subset(data_taxa, data_taxa$Phylum=="p__Zygomycota"))
+str(Zygo.data)
 head(Zygo.data)
 
-Glom.data<-subset(data_taxa2, data_taxa2$Phylum=="p__Glomeromycota")
+Glom.data<-droplevels(subset(data_taxa, data_taxa$Phylum=="p__Glomeromycota"))
+str(Glom.data)
 head(Glom.data)
 
-Asco.data<-subset(data_taxa2, data_taxa2$Phylum=="p__Ascomycota")
+Asco.data<-droplevels(subset(data_taxa, data_taxa$Phylum=="p__Ascomycota"))
+str(Asco.data)
 head(Asco.data)
 
-Basidio.data<-subset(data_taxa2, data_taxa2$Phylum=="p__Basidiomycota")
+Basidio.data<-droplevels(subset(data_taxa, data_taxa$Phylum=="p__Basidiomycota"))
+str(Basidio.data)
 head(Basidio.data)
 
-Chytri.data<-subset(data_taxa2, data_taxa2$Phylum=="p__Chytridiomycota")
+Chytri.data<-droplevels(subset(data_taxa, data_taxa$Phylum=="p__Chytridiomycota"))
+str(Chytri.data)
 head(Chytri.data)
 
-Unk.data<-subset(data_taxa2, data_taxa2$Phylum=="")
+Unk.data<-subset(data_taxa, data_taxa$Phylum=="")
 head(Unk.data)
+levels(Unk.data$Phylum)
+str(Unk.data)
 
 #Bootstrap functions from R. Williams
 boot.high<-function(XX){
